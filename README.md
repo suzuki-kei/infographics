@@ -4,5 +4,5 @@
 
 # 実行方法
 
-    go run src/main.go
+    go run src/*.go
 
