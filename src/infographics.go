@@ -83,8 +83,8 @@ func BigIntFromString(value string) (*big.Int, bool) {
 func Product(xs []string, ys[]string, f func(string, string) string) []string {
     var values []string
 
-    for _, y := range ys {
-        for _, x := range xs {
+    for _, x := range xs {
+        for _, y := range ys {
             values = append(values, f(x, y))
         }
     }
