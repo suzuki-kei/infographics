@@ -62,9 +62,11 @@ func CreateUnitToNameMap() map[*big.Int]string {
         "", "万", "億", "兆", "京", "垓", "𥝱", "穣", "溝", "澗", "正",
         "載", "極", "恒河沙", "阿僧祇", "那由他", "不可思議", "無量大数",
     }
-    names := Product(prefixes, suffixes, func(prefix string, suffix string) string {
-        return prefix + suffix
-    })
+    names := MapSlice(
+        ProductSlices(prefixes, suffixes),
+        func(pair []string) string {
+            return strings.Join(pair, "")
+        })
 
     unitToNameMap := make(map[*big.Int]string)
     for i, name := range names {
@@ -78,16 +80,5 @@ func CreateUnitToNameMap() map[*big.Int]string {
 
 func BigIntFromString(value string) (*big.Int, bool) {
     return new(big.Int).SetString(value, 10)
-}
-
-func Product(xs []string, ys[]string, f func(string, string) string) []string {
-    var values []string
-
-    for _, x := range xs {
-        for _, y := range ys {
-            values = append(values, f(x, y))
-        }
-    }
-    return values
 }
 
