@@ -63,9 +63,9 @@ func CreateUnitToNameMap() map[*big.Int]string {
         "載", "極", "恒河沙", "阿僧祇", "那由他", "不可思議", "無量大数",
     }
     names := MapSlice(
-        ProductSlices(prefixes, suffixes),
+        ProductSlices(suffixes, prefixes),
         func(pair []string) string {
-            return strings.Join(pair, "")
+            return pair[1] + pair[0]
         })
 
     unitToNameMap := make(map[*big.Int]string)
