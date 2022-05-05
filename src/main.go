@@ -11,7 +11,7 @@ func main() {
     // TODO: options.short を考慮する.
 
     for _, stringValue := range options.values {
-        infographicsText, success := InfographicsTextFromString(stringValue, " ")
+        infographicsText, success := InfographicsTextFromString(stringValue, options.delimiter)
         if !success {
             fmt.Println("ERROR: " + stringValue)
             continue
@@ -29,20 +29,24 @@ type Options struct {
 func parseArguments() Options {
     var options Options
 
-    // TODO: Options.delimiter も解釈する.
+    for i := 0; i < len(os.Args); i++ {
+        option := os.Args[i]
 
-    for _, arg := range os.Args[1:] {
-        if arg == "-s" || arg == "--short" {
+        if option == "-s" || option == "--short" {
             options.short = true
             continue
         }
-        if strings.HasPrefix(arg, "-") {
-            fmt.Println("WARN: Invalid option [" + arg + "]")
+        if option == "-d" || option == "--delimiter" {
+            i++
+            options.delimiter = os.Args[i]
             continue
         }
-        options.values = append(options.values, arg)
+        if strings.HasPrefix(option, "-") {
+            fmt.Println("WARN: Invalid option [" + option + "]")
+            continue
+        }
+        options.values = append(options.values, option)
     }
-
     return options
 }
 
