@@ -15,12 +15,7 @@ func AssertSuccess(t *testing.T, err error) {
     if err == nil {
         return
     }
-    format := strings.Join([]string{
-        "error occured.",
-        "expected = %v",
-        "actual = %v",
-    }, "\n")
-    t.Errorf(format, nil, err)
+    errorf(t, "error occured.", nil, err)
 }
 
 /**
@@ -32,12 +27,7 @@ func AssertEquals[T comparable](t *testing.T, expected T, actual T) {
     if expected == actual {
         return
     }
-    format := strings.Join([]string{
-        "not equal.",
-        "expected = %v",
-        "actual= %v",
-    }, "\n")
-    t.Errorf(format, expected, actual)
+    errorf(t, "not equal.", expected, actual)
 }
 
 /**
@@ -49,10 +39,19 @@ func AssertDeepEquals[T any](t *testing.T, expected T, actual T) {
     if reflect.DeepEqual(expected, actual) {
         return
     }
+    errorf(t, "not deep equal.", expected, actual)
+}
+
+/**
+ *
+ * testing.T.Errorf() を用いて検証に失敗したことを報告する.
+ *
+ */
+func errorf(t *testing.T, description string, expected any, actual any) {
     format := strings.Join([]string{
-        "not deep equal.",
+        description,
         "expected = %v",
-        "actual= %v",
+        "actual = %v",
     }, "\n")
     t.Errorf(format, expected, actual)
 }
