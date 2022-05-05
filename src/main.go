@@ -10,13 +10,13 @@ func main() {
     options := parseArguments()
     // TODO: options.short を考慮する.
 
-    for _, stringValue := range options.values {
-        infographicsText, success := InfographicsTextFromString(stringValue, options.delimiter)
+    for _, value := range options.values {
+        text, success := InfographicsTextFromString(value, options.delimiter)
         if !success {
-            error("invalid value: %v", stringValue)
+            error("invalid value: %v", value)
             continue
         }
-        fmt.Println(stringValue + " => " + infographicsText)
+        fmt.Printf("%v => %v\n", value, text)
     }
 }
 
