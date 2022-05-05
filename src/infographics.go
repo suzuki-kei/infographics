@@ -175,9 +175,9 @@ func createNumeralUnits(prefixes []string, suffixes []string) []NumeralUnit {
 
     var numeralUnits []NumeralUnit
     {
-        for i, _ := range names {
+        for i, name := range names {
             unit := createUnit(i)
-            numeralUnit := NumeralUnit{unit, names[i]}
+            numeralUnit := NumeralUnit{unit, name}
             numeralUnits = append(numeralUnits, numeralUnit)
         }
         sort.Slice(numeralUnits, func(i, j int) bool {
