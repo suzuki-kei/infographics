@@ -29,7 +29,7 @@ type Options struct {
 func parseArguments() Options {
     var options Options
 
-    for i := 0; i < len(os.Args); i++ {
+    for i := 1; i < len(os.Args); i++ {
         option := os.Args[i]
 
         if option == "-s" || option == "--short" {
