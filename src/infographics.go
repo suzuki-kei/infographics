@@ -1,23 +1,24 @@
 package main
 
 import (
+    "fmt"
     "math/big"
     "sort"
     "strings"
 )
 
 type InfographicsTextOptions struct {
-    // 区切り文字
-    delimiter string
-
     // true の場合は短縮表現を生成する
     short bool
+
+    // 区切り文字
+    delimiter string
 }
 
 func NewInfographicsTextOptions() *InfographicsTextOptions {
     options := new(InfographicsTextOptions)
-    options.delimiter = " "
     options.short = false
+    options.delimiter = " "
     return options
 }
 
@@ -43,13 +44,16 @@ type UnitToNamePair struct {
 
 func InfographicsTextFromBigInt(
         value *big.Int, options *InfographicsTextOptions) (string, bool) {
-    // TODO: options.short を考慮する.
-
     if value.Cmp(big.NewInt(0)) < 0 {
         return "", false
     }
+
     if value.Cmp(big.NewInt(0)) == 0 {
-        return "零", true
+        if options.short {
+            return "0", true
+        } else {
+            return "零", true
+        }
     }
 
     unitToNameMap := CreateUnitToNameMap()
@@ -64,8 +68,21 @@ func InfographicsTextFromBigInt(
     var texts []string
     for _, pair := range unitToNamePairs {
         quotient, remainder := new(big.Int).DivMod(value, pair.unit, new(big.Int))
-        for i := 0; i < int(quotient.Int64()); i++ {
-            texts = append(texts, pair.name)
+        quotientInt := int(quotient.Int64())
+
+        if options.short {
+            if quotientInt > 0 {
+                name := pair.name
+                name = strings.ReplaceAll(name, "千", "000")
+                name = strings.ReplaceAll(name, "百", "00")
+                name = strings.ReplaceAll(name, "十", "0")
+                name = strings.ReplaceAll(name, "一", "")
+                texts = append(texts, fmt.Sprintf("%d%s", quotientInt, name))
+            }
+        } else {
+            for i := 0; i < quotientInt; i++ {
+                texts = append(texts, pair.name)
+            }
         }
         value = remainder
     }
