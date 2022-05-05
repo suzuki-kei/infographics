@@ -41,6 +41,11 @@ func parseArguments() ([]string, *InfographicsTextOptions) {
             options.short = true
             continue
         }
+        if strings.HasPrefix(option, "--delimiter=") {
+            delimiter := strings.Replace(option, "--delimiter=", "", 1)
+            options.delimiter = delimiter
+            continue
+        }
         if option == "-d" || option == "--delimiter" {
             i++
             options.delimiter = os.Args[i]
