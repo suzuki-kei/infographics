@@ -6,18 +6,34 @@ import (
     "strings"
 )
 
-func InfographicsTextFromString(value string, delimiter string) (string, bool) {
+type InfographicsTextOptions struct {
+    // 区切り文字
+    delimiter string
+
+    // true の場合は短縮表現を生成する
+    short bool
+}
+
+func NewInfographicsTextOptions() *InfographicsTextOptions {
+    options := new(InfographicsTextOptions)
+    options.delimiter = " "
+    options.short = false
+    return options
+}
+
+func InfographicsTextFromString(
+        value string, options *InfographicsTextOptions) (string, bool) {
     bigintValue, success := BigIntFromString(value)
     if !success {
         return "", false
     }
 
-    infographicsText, success := InfographicsTextFromBigInt(bigintValue, delimiter)
+    text, success := InfographicsTextFromBigInt(bigintValue, options)
     if !success {
         return "", false
     }
 
-    return infographicsText, true
+    return text, true
 }
 
 type UnitToNamePair struct {
@@ -25,7 +41,10 @@ type UnitToNamePair struct {
     name string
 }
 
-func InfographicsTextFromBigInt(value *big.Int, delimiter string) (string, bool) {
+func InfographicsTextFromBigInt(
+        value *big.Int, options *InfographicsTextOptions) (string, bool) {
+    // TODO: options.short を考慮する.
+
     if value.Cmp(big.NewInt(0)) < 0 {
         return "", false
     }
@@ -51,7 +70,7 @@ func InfographicsTextFromBigInt(value *big.Int, delimiter string) (string, bool)
         value = remainder
     }
 
-    return strings.Join(texts, delimiter), true
+    return strings.Join(texts, options.delimiter), true
 }
 
 func CreateUnitToNameMap() map[*big.Int]string {

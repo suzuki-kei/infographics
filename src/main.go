@@ -7,11 +7,10 @@ import (
 )
 
 func main() {
-    options := parseArguments()
-    // TODO: options.short を考慮する.
+    values, options := parseArguments()
 
-    for _, value := range options.values {
-        text, success := InfographicsTextFromString(value, options.delimiter)
+    for _, value := range values {
+        text, success := InfographicsTextFromString(value, options)
         if !success {
             error("invalid value: %v", value)
             continue
@@ -20,22 +19,9 @@ func main() {
     }
 }
 
-type Options struct {
-    short bool
-    delimiter string
-    values []string
-}
-
-func NewOptions() *Options {
-    options := new(Options)
-    options.short = false
-    options.delimiter = " "
-    options.values = []string {}
-    return options
-}
-
-func parseArguments() *Options {
-    options := NewOptions()
+func parseArguments() ([]string, *InfographicsTextOptions) {
+    values := []string {}
+    options := NewInfographicsTextOptions()
 
     for i := 1; i < len(os.Args); i++ {
         option := os.Args[i]
@@ -53,8 +39,8 @@ func parseArguments() *Options {
             warn("invalid options: %v", option)
             continue
         }
-        options.values = append(options.values, option)
+        values = append(values, option)
     }
-    return options
+    return values, options
 }
 
