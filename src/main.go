@@ -33,6 +33,10 @@ func parseArguments() ([]string, *InfographicsTextOptions) {
     for i := 1; i < len(os.Args); i++ {
         option := os.Args[i]
 
+        if option == "--" {
+            values = append(values, os.Args[i + 1:]...)
+            break
+        }
         if option == "-s" || option == "--short" {
             options.short = true
             continue
