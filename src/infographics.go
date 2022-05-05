@@ -78,7 +78,3 @@ func CreateUnitToNameMap() map[*big.Int]string {
     return unitToNameMap
 }
 
-func BigIntFromString(value string) (*big.Int, bool) {
-    return new(big.Int).SetString(value, 10)
-}
-
