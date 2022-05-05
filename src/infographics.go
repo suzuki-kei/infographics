@@ -75,10 +75,7 @@ func infographicsLongTextFromBigInt(value *big.Int, delimiter string) string {
     for _, pair := range unitToNamePairs {
         quotient, remainder := new(big.Int).DivMod(value, pair.unit, new(big.Int))
         quotientInt := int(quotient.Int64())
-
-        for i := 0; i < quotientInt; i++ {
-            texts = append(texts, pair.name)
-        }
+        texts = append(texts, Repeat(pair.name, quotientInt)...)
         value = remainder
     }
 

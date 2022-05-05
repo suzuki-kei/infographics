@@ -67,3 +67,28 @@ func TestProductSlicesCallback(t *testing.T) {
     assertDeepEquals(t, expected, product)
 }
 
+func TestRepeat(t *testing.T) {
+    type TestCase struct {
+        value string
+        n int
+        expected []string
+    }
+    testCases := []TestCase{
+        // n 要素のスライスが生成される.
+        {"A", 1, []string{"A"}},
+        {"B", 2, []string{"B", "B"}},
+        {"C", 3, []string{"C", "C", "C"}},
+
+        // n <= 0 の場合は空のスライスが生成される.
+        {"A", 0, []string{}},
+        {"A", -1, []string{}},
+    }
+    for _, testCase := range testCases {
+        value := testCase.value
+        n := testCase.n
+        expected := testCase.expected
+        actual := Repeat(value, n)
+        assertDeepEquals(t, expected, actual)
+    }
+}
+

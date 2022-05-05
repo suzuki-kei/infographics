@@ -92,3 +92,21 @@ func productSlicesCallback_Tailrec[T any](leadingValues []T, slices [][]T, callb
     }
 }
 
+/**
+ *
+ * 指定した値 value を n 個持つスライスを生成する.
+ *
+ */
+func Repeat[T any](value T, n int) []T {
+    if n < 0 {
+        return []T{}
+    }
+
+    values := make([]T, n)
+
+    for i := 0; i < n; i++ {
+        values[i] = value
+    }
+    return values
+}
+
