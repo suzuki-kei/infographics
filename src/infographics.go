@@ -48,12 +48,18 @@ func infographicsTextFromBigInt(
         return "", false
     }
 
+    if options.short {
+        text := infographicsShortTextFromBigInt(value, options.delimiter)
+        return text, true
+    } else {
+        text := infographicsLongTextFromBigInt(value, options.delimiter)
+        return text, true
+    }
+}
+
+func infographicsLongTextFromBigInt(value *big.Int, delimiter string) string {
     if value.Cmp(big.NewInt(0)) == 0 {
-        if options.short {
-            return "0", true
-        } else {
-            return "零", true
-        }
+        return "零"
     }
 
     unitToNameMap := createUnitToNameMap()
@@ -70,24 +76,46 @@ func infographicsTextFromBigInt(
         quotient, remainder := new(big.Int).DivMod(value, pair.unit, new(big.Int))
         quotientInt := int(quotient.Int64())
 
-        if options.short {
-            if quotientInt > 0 {
-                name := pair.name
-                name = strings.ReplaceAll(name, "千", "000")
-                name = strings.ReplaceAll(name, "百", "00")
-                name = strings.ReplaceAll(name, "十", "0")
-                name = strings.ReplaceAll(name, "一", "")
-                texts = append(texts, fmt.Sprintf("%d%s", quotientInt, name))
-            }
-        } else {
-            for i := 0; i < quotientInt; i++ {
-                texts = append(texts, pair.name)
-            }
+        for i := 0; i < quotientInt; i++ {
+            texts = append(texts, pair.name)
         }
         value = remainder
     }
 
-    return strings.Join(texts, options.delimiter), true
+    return strings.Join(texts, delimiter)
+}
+
+func infographicsShortTextFromBigInt(value *big.Int, delimiter string) string {
+    if value.Cmp(big.NewInt(0)) == 0 {
+        return "0"
+    }
+
+    unitToNameMap := createUnitToNameMap()
+    var unitToNamePairs []UnitToNamePair
+    for unit, name := range unitToNameMap {
+        unitToNamePairs = append(unitToNamePairs, UnitToNamePair{unit, name})
+    }
+    sort.Slice(unitToNamePairs, func(i, j int) bool {
+        return !(unitToNamePairs[i].unit.Cmp(unitToNamePairs[j].unit) < 0)
+    })
+
+    var texts []string
+    for _, pair := range unitToNamePairs {
+        quotient, remainder := new(big.Int).DivMod(value, pair.unit, new(big.Int))
+        quotientInt := int(quotient.Int64())
+
+        if quotientInt > 0 {
+            name := pair.name
+            name = strings.ReplaceAll(name, "千", "000")
+            name = strings.ReplaceAll(name, "百", "00")
+            name = strings.ReplaceAll(name, "十", "0")
+            name = strings.ReplaceAll(name, "一", "")
+            texts = append(texts, fmt.Sprintf("%d%s", quotientInt, name))
+        }
+        value = remainder
+    }
+
+    return strings.Join(texts, delimiter)
 }
 
 func createUnitToNameMap() map[*big.Int]string {
