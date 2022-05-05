@@ -1,25 +1,19 @@
 package main
 
 import (
-    "reflect"
     "testing"
 )
 
 func TestCopySlice(t *testing.T) {
-    values1 := []int {1, 2, 3}
-    values2 := CopySlice(values1)
+    slice := []int {1, 2, 3}
 
-    if !reflect.DeepEqual(values2, []int{1, 2, 3}) {
-        t.Errorf("not expected result: %v", values2)
-    }
+    copiedSlice := CopySlice(slice)
+    assertDeepEquals(t, []int {1, 2, 3}, copiedSlice)
 
-    values2[0] = 10
-    values2[1] = 20
-    values2[2] = 30
-
-    if !reflect.DeepEqual(values1, []int{1, 2, 3}) {
-        t.Errorf("source slice was unintentionally modified: %v", values1)
-    }
+    slice[0] = 10
+    slice[1] = 20
+    slice[2] = 30
+    assertDeepEquals(t, []int {1, 2, 3}, copiedSlice)
 }
 
 func TestMapSlice(t *testing.T) {
@@ -27,10 +21,7 @@ func TestMapSlice(t *testing.T) {
     mapper := func(x int) int { return x + 1 }
     mappedValues := MapSlice(values, mapper)
     expectedValues := []int {2, 3, 4}
-
-    if !reflect.DeepEqual(mappedValues, expectedValues) {
-        t.Errorf("not expected result: %v", mappedValues)
-    }
+    assertDeepEquals(t, expectedValues, mappedValues)
 }
 
 func TestProductSlices(t *testing.T) {
@@ -48,9 +39,7 @@ func TestProductSlices(t *testing.T) {
         {"C", "2"},
         {"C", "3"},
     }
-    if !reflect.DeepEqual(actual, expected) {
-        t.Errorf("not expected result: %v", actual)
-    }
+    assertDeepEquals(t, expected, actual)
 }
 
 func TestProductSlicesCallback(t *testing.T) {
@@ -74,11 +63,7 @@ func TestProductSlicesCallback(t *testing.T) {
         {3, 5},
         {3, 6},
     }
-
     ProductSlicesCallback(callback, slices...)
-
-    if !reflect.DeepEqual(product, expected) {
-        t.Errorf("not expected result: %v", product)
-    }
+    assertDeepEquals(t, expected, product)
 }
 

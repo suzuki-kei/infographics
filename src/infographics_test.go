@@ -4,12 +4,6 @@ import (
     "testing"
 )
 
-func assertEquals[T comparable](t *testing.T, expected T, actual T) {
-    if expected != actual {
-        t.Errorf("not equals.\n\texpected = %v\n\tactual = %v", expected, actual)
-    }
-}
-
 func TestInfographicsTextFromString(t *testing.T) {
     testCases := [][]string {
         {"0", "零"},
