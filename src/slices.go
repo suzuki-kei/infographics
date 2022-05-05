@@ -103,10 +103,12 @@ func Repeat[T any](value T, n int) []T {
     }
 
     values := make([]T, n)
-
-    for i := 0; i < n; i++ {
-        values[i] = value
+    {
+        for i := 0; i < n; i++ {
+            values[i] = value
+        }
     }
+
     return values
 }
 
