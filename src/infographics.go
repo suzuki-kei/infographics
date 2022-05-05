@@ -49,10 +49,10 @@ func InfographicsTextFromString(
 
 /**
  *
- * 単位と名称 (Ex. {10000, "万"}).
+ * 単位と名前 (Ex. {10000, "万"}).
  *
  */
-type UnitToNamePair struct {
+type NumeralUnit struct {
     // 単位 (Ex. 10000)
     unit *big.Int
 
@@ -87,21 +87,24 @@ func infographicsLongTextFromBigInt(value *big.Int, delimiter string) (string, e
         return "零", nil
     }
 
-    unitToNameMap := createUnitToNameMap()
-    var unitToNamePairs []UnitToNamePair
-    for unit, name := range unitToNameMap {
-        unitToNamePairs = append(unitToNamePairs, UnitToNamePair{unit, name})
-    }
-    sort.Slice(unitToNamePairs, func(i, j int) bool {
-        return !(unitToNamePairs[i].unit.Cmp(unitToNamePairs[j].unit) < 0)
-    })
+    numeralUnits := createNumeralUnits(
+        []string{
+            "一", "十", "百", "千",
+        },
+        []string{
+            "", "万", "億", "兆", "京", "垓", "𥝱", "穣", "溝", "澗", "正",
+            "載", "極", "恒河沙", "阿僧祇", "那由他", "不可思議", "無量大数",
+        },
+    )
 
     var texts []string
-    for _, pair := range unitToNamePairs {
-        quotient, remainder := new(big.Int).DivMod(value, pair.unit, new(big.Int))
-        quotientInt := int(quotient.Int64())
-        texts = append(texts, Repeat(pair.name, quotientInt)...)
-        value = remainder
+    {
+        for _, numeralUnit := range numeralUnits {
+            quotient, remainder := new(big.Int).DivMod(value, numeralUnit.unit, new(big.Int))
+            quotientInt := int(quotient.Int64())
+            texts = append(texts, Repeat(numeralUnit.name, quotientInt)...)
+            value = remainder
+        }
     }
 
     return strings.Join(texts, delimiter), nil
@@ -120,29 +123,27 @@ func infographicsShortTextFromBigInt(value *big.Int, delimiter string) (string, 
         return "0", nil
     }
 
-    unitToNameMap := createUnitToNameMap()
-    var unitToNamePairs []UnitToNamePair
-    for unit, name := range unitToNameMap {
-        unitToNamePairs = append(unitToNamePairs, UnitToNamePair{unit, name})
-    }
-    sort.Slice(unitToNamePairs, func(i, j int) bool {
-        return !(unitToNamePairs[i].unit.Cmp(unitToNamePairs[j].unit) < 0)
-    })
+    numeralUnits := createNumeralUnits(
+        []string{
+            "", "0", "00", "000",
+        },
+        []string{
+            "", "万", "億", "兆", "京", "垓", "𥝱", "穣", "溝", "澗", "正",
+            "載", "極", "恒河沙", "阿僧祇", "那由他", "不可思議", "無量大数",
+        },
+    )
 
     var texts []string
-    for _, pair := range unitToNamePairs {
-        quotient, remainder := new(big.Int).DivMod(value, pair.unit, new(big.Int))
-        quotientInt := int(quotient.Int64())
+    {
+        for _, numeralUnit := range numeralUnits {
+            quotient, remainder := new(big.Int).DivMod(value, numeralUnit.unit, new(big.Int))
+            quotientInt := int(quotient.Int64())
 
-        if quotientInt > 0 {
-            name := pair.name
-            name = strings.ReplaceAll(name, "千", "000")
-            name = strings.ReplaceAll(name, "百", "00")
-            name = strings.ReplaceAll(name, "十", "0")
-            name = strings.ReplaceAll(name, "一", "")
-            texts = append(texts, fmt.Sprintf("%d%s", quotientInt, name))
+            if quotientInt > 0 {
+                texts = append(texts, fmt.Sprintf("%d%s", quotientInt, numeralUnit.name))
+            }
+            value = remainder
         }
-        value = remainder
     }
 
     return strings.Join(texts, delimiter), nil
@@ -150,30 +151,40 @@ func infographicsShortTextFromBigInt(value *big.Int, delimiter string) (string, 
 
 /**
  *
- * 単位と名前のマッピングを生成する.
+ * prefixes と suffixes から NumeralUnit のスライスを生成する.
+ *
+ * 戻り値は NumeralUnit.unit の降順に整列されている.
  *
  */
-func createUnitToNameMap() map[*big.Int]string {
-    prefixes := []string{
-        "一", "十", "百", "千",
+func createNumeralUnits(prefixes []string, suffixes []string) []NumeralUnit {
+    var names []string
+    {
+        for _, suffix := range suffixes {
+            for _, prefix := range prefixes {
+                name := fmt.Sprintf("%s%s", prefix, suffix)
+                names = append(names, name)
+            }
+        }
     }
-    suffixes := []string{
-        "", "万", "億", "兆", "京", "垓", "𥝱", "穣", "溝", "澗", "正",
-        "載", "極", "恒河沙", "阿僧祇", "那由他", "不可思議", "無量大数",
-    }
-    names := MapSlice(
-        ProductSlices(suffixes, prefixes),
-        func(pair []string) string {
-            return pair[1] + pair[0]
-        })
 
-    unitToNameMap := make(map[*big.Int]string)
-    for i, name := range names {
-        base := big.NewInt(10)
-        exponent := big.NewInt(int64(i))
-        unit := new(big.Int).Exp(base, exponent, nil)
-        unitToNameMap[unit] = name
+    createUnit := func(exponent int) *big.Int {
+        bigintBase := big.NewInt(int64(10))
+        bigintExponent := big.NewInt(int64(exponent))
+        return new(big.Int).Exp(bigintBase, bigintExponent, nil)
     }
-    return unitToNameMap
+
+    var numeralUnits []NumeralUnit
+    {
+        for i, _ := range names {
+            unit := createUnit(i)
+            numeralUnit := NumeralUnit{unit, names[i]}
+            numeralUnits = append(numeralUnits, numeralUnit)
+        }
+        sort.Slice(numeralUnits, func(i, j int) bool {
+            return !(numeralUnits[i].unit.Cmp(numeralUnits[j].unit) < 0)
+        })
+    }
+
+    return numeralUnits
 }
 
