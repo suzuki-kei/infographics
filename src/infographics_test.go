@@ -12,7 +12,7 @@ type TestCase struct {
 }
 
 func TestInfographicsTextFromString(t *testing.T) {
-    testCases := []TestCase {
+    testCases := []TestCase{
         {"0", true, " ", "0"},
         {"0", false, " ", "零"},
         {"1", true, " ", "1"},

@@ -5,7 +5,7 @@ import (
 )
 
 func TestBigIntFromString(t *testing.T) {
-    testCases := []string {
+    testCases := []string{
         "0",
         "1",
         "4294967296", // 2^32

@@ -29,7 +29,7 @@ func MapSlice[From any, To any](slice []From, mapper func(From) To) []To {
  *
  */
 func ProductSlices[T any](slices ...[]T) [][]T {
-    product := [][]T {}
+    product := [][]T{}
 
     ProductSlicesCallback(
         func(values []T) {
@@ -48,7 +48,7 @@ func ProductSlicesCallback[T any](callback func([]T), slices ...[]T) {
     productSlicesCallback_Loop(slices, callback)
 
     // NOTE: ループ版と再帰版の両方を実装したかっただけ.
-    // productSlicesCallback_Tailrec([]T {}, slices, callback)
+    // productSlicesCallback_Tailrec([]T{}, slices, callback)
 }
 
 // ProductSlicesCallback のループによる実装.

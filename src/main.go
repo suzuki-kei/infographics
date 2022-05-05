@@ -20,7 +20,7 @@ func main() {
 }
 
 func parseArguments() ([]string, *InfographicsTextOptions) {
-    values := []string {}
+    values := []string{}
     options := NewInfographicsTextOptions()
 
     for i := 1; i < len(os.Args); i++ {

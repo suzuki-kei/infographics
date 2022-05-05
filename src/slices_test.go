@@ -5,30 +5,30 @@ import (
 )
 
 func TestCopySlice(t *testing.T) {
-    slice := []int {1, 2, 3}
+    slice := []int{1, 2, 3}
 
     copiedSlice := CopySlice(slice)
-    assertDeepEquals(t, []int {1, 2, 3}, copiedSlice)
+    assertDeepEquals(t, []int{1, 2, 3}, copiedSlice)
 
     slice[0] = 10
     slice[1] = 20
     slice[2] = 30
-    assertDeepEquals(t, []int {1, 2, 3}, copiedSlice)
+    assertDeepEquals(t, []int{1, 2, 3}, copiedSlice)
 }
 
 func TestMapSlice(t *testing.T) {
-    values := []int {1, 2, 3}
+    values := []int{1, 2, 3}
     mapper := func(x int) int { return x + 1 }
     mappedValues := MapSlice(values, mapper)
-    expectedValues := []int {2, 3, 4}
+    expectedValues := []int{2, 3, 4}
     assertDeepEquals(t, expectedValues, mappedValues)
 }
 
 func TestProductSlices(t *testing.T) {
     actual := ProductSlices(
-        []string {"A", "B", "C"},
-        []string {"1", "2", "3"})
-    expected := [][]string {
+        []string{"A", "B", "C"},
+        []string{"1", "2", "3"})
+    expected := [][]string{
         {"A", "1"},
         {"A", "2"},
         {"A", "3"},
@@ -43,16 +43,16 @@ func TestProductSlices(t *testing.T) {
 }
 
 func TestProductSlicesCallback(t *testing.T) {
-    product := [][]int {
+    product := [][]int{
     }
     callback := func(values []int) {
         product = append(product, values)
     }
-    slices := [][]int {
+    slices := [][]int{
         {1, 2, 3},
         {4, 5, 6},
     }
-    expected := [][]int {
+    expected := [][]int{
         {1, 4},
         {1, 5},
         {1, 6},
