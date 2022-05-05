@@ -14,8 +14,8 @@ func TestBigIntFromString(t *testing.T) {
     }
     for _, stringValue := range stringValues {
         bigintValue, success := BigIntFromString(stringValue)
-        assertEquals(t, true, success)
-        assertEquals(t, stringValue, bigintValue.String())
+        AssertEquals(t, true, success)
+        AssertEquals(t, stringValue, bigintValue.String())
     }
 }
 

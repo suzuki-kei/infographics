@@ -31,8 +31,8 @@ func TestInfographicsTextFromString(t *testing.T) {
         options.short = short
         options.delimiter = delimiter
         text, success := InfographicsTextFromString(value, options)
-        assertEquals(t, true, success)
-        assertEquals(t, expected, text)
+        AssertEquals(t, true, success)
+        AssertEquals(t, expected, text)
     }
 }
 
