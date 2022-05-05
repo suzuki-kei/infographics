@@ -4,14 +4,13 @@ import (
     "testing"
 )
 
-type TestCase struct {
-    value string
-    short bool
-    delimiter string
-    expected string
-}
-
 func TestInfographicsTextFromString(t *testing.T) {
+    type TestCase struct {
+        value string
+        short bool
+        delimiter string
+        expected string
+    }
     testCases := []TestCase{
         {"0", true, " ", "0"},
         {"0", false, " ", "零"},
@@ -22,14 +21,18 @@ func TestInfographicsTextFromString(t *testing.T) {
         {"7050301", true, " ", "700万 5万 300 1"},
         {"7050301", false, " ", "百万 百万 百万 百万 百万 百万 百万 一万 一万 一万 一万 一万 百 百 百 一"},
     }
-
     for _, testCase := range testCases {
+        value := testCase.value
+        short := testCase.short
+        delimiter := testCase.delimiter
+        expected := testCase.expected
+
         options := NewInfographicsTextOptions()
-        options.short = testCase.short
-        options.delimiter = testCase.delimiter
-        text, success := InfographicsTextFromString(testCase.value, options)
+        options.short = short
+        options.delimiter = delimiter
+        text, success := InfographicsTextFromString(value, options)
         assertEquals(t, true, success)
-        assertEquals(t, testCase.expected, text)
+        assertEquals(t, expected, text)
     }
 }
 
