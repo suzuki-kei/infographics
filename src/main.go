@@ -19,6 +19,13 @@ func main() {
     }
 }
 
+/**
+ *
+ * コマンドライン引数を解析し, (values, options) を返す.
+ *
+ * values には変換対象の数値文字列 (Ex. "123") が含まれる.
+ *
+ */
 func parseArguments() ([]string, *InfographicsTextOptions) {
     values := []string{}
     options := NewInfographicsTextOptions()

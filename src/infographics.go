@@ -7,6 +7,11 @@ import (
     "strings"
 )
 
+/**
+ *
+ * インフォグラフィック文字列を生成するときのオプション.
+ *
+ */
 type InfographicsTextOptions struct {
     // true の場合は短縮表現を生成する
     short bool
@@ -15,6 +20,11 @@ type InfographicsTextOptions struct {
     delimiter string
 }
 
+/**
+ *
+ * デフォルト値で初期化した InfographicsTextOptions を生成する.
+ *
+ */
 func NewInfographicsTextOptions() *InfographicsTextOptions {
     options := new(InfographicsTextOptions)
     options.short = false
@@ -22,6 +32,16 @@ func NewInfographicsTextOptions() *InfographicsTextOptions {
     return options
 }
 
+/**
+ *
+ * インフォグラフィック文字列を生成する.
+ *
+ * value に変換対象の値を文字列として指定する.
+ *
+ * 戻り値として (infographicsText, success) を返す.
+ * 変換に失敗した場合は success が false となる.
+ *
+ */
 func InfographicsTextFromString(
         value string, options *InfographicsTextOptions) (string, bool) {
     bigintValue, success := BigIntFromString(value)
@@ -37,11 +57,27 @@ func InfographicsTextFromString(
     return text, true
 }
 
+/**
+ *
+ * 単位と名称 (Ex. {10000, "万"}).
+ *
+ */
 type UnitToNamePair struct {
+    // 単位 (Ex. 10000)
     unit *big.Int
+
+    // 名前 (Ex. "万")
     name string
 }
 
+/**
+ *
+ * big.Int からインフォグラフィック文字列を生成する.
+ *
+ * 戻り値として (infographicsText, success) を返す.
+ * 変換に失敗した場合は success が false となる.
+ *
+ */
 func infographicsTextFromBigInt(
         value *big.Int, options *InfographicsTextOptions) (string, bool) {
     if value.Cmp(big.NewInt(0)) < 0 {
@@ -57,6 +93,13 @@ func infographicsTextFromBigInt(
     }
 }
 
+/**
+ *
+ * big.Int からインフォグラフィック文字列の長いバージョンを生成する.
+ *
+ * TODO value が負数の場合を考慮する.
+ *
+ */
 func infographicsLongTextFromBigInt(value *big.Int, delimiter string) string {
     if value.Cmp(big.NewInt(0)) == 0 {
         return "零"
@@ -82,6 +125,13 @@ func infographicsLongTextFromBigInt(value *big.Int, delimiter string) string {
     return strings.Join(texts, delimiter)
 }
 
+/**
+ *
+ * big.Int からインフォグラフィック文字列の短いバージョンを生成する.
+ *
+ * TODO value が負数の場合を考慮する.
+ *
+ */
 func infographicsShortTextFromBigInt(value *big.Int, delimiter string) string {
     if value.Cmp(big.NewInt(0)) == 0 {
         return "0"
@@ -115,6 +165,11 @@ func infographicsShortTextFromBigInt(value *big.Int, delimiter string) string {
     return strings.Join(texts, delimiter)
 }
 
+/**
+ *
+ * 単位と名前のマッピングを生成する.
+ *
+ */
 func createUnitToNameMap() map[*big.Int]string {
     prefixes := []string{
         "一", "十", "百", "千",

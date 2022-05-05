@@ -6,6 +6,11 @@ import (
     "testing"
 )
 
+/**
+ *
+ * 二つの値が == を用いて等しいことを確認する.
+ *
+ */
 func assertEquals[T comparable](t *testing.T, expected T, actual T) {
     if expected == actual {
         return
@@ -18,6 +23,11 @@ func assertEquals[T comparable](t *testing.T, expected T, actual T) {
     t.Errorf(format, expected, actual)
 }
 
+/**
+ *
+ * 二つの値が reflect.DeepEqual を用いて等しいことを確認する.
+ *
+ */
 func assertDeepEquals[T any](t *testing.T, expected T, actual T) {
     if reflect.DeepEqual(expected, actual) {
         return
