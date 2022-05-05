@@ -13,8 +13,8 @@ func TestBigIntFromString(t *testing.T) {
         "1267650600228229401496703205376", // 2^100
     }
     for _, stringValue := range stringValues {
-        bigintValue, success := BigIntFromString(stringValue)
-        AssertEquals(t, true, success)
+        bigintValue, err := BigIntFromString(stringValue)
+        AssertSuccess(t, err)
         AssertEquals(t, stringValue, bigintValue.String())
     }
 }

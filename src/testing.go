@@ -8,6 +8,23 @@ import (
 
 /**
  *
+ * エラーが発生しなかったことを確認する.
+ *
+ */
+func AssertSuccess(t *testing.T, err error) {
+    if err == nil {
+        return
+    }
+    format := strings.Join([]string{
+        "error occured.",
+        "expected = %v",
+        "actual = %v",
+    }, "\n")
+    t.Errorf(format, nil, err)
+}
+
+/**
+ *
  * 二つの値が == を用いて等しいことを確認する.
  *
  */

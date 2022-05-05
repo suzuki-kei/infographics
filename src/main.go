@@ -10,9 +10,9 @@ func main() {
     values, options := parseArguments()
 
     for _, value := range values {
-        text, success := InfographicsTextFromString(value, options)
-        if !success {
-            Error("invalid value: %v", value)
+        text, err := InfographicsTextFromString(value, options)
+        if err != nil {
+            Error(err.Error())
             continue
         }
         fmt.Printf("%v => %v\n", value, text)

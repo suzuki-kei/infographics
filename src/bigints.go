@@ -1,17 +1,20 @@
 package main
 
 import (
+    "fmt"
     "math/big"
 )
 
 /**
  *
- * 数値文字列を big.Int に変換し, (value, success) を返す.
- *
- * 変換に失敗した場合は success が false となる.
+ * 数値文字列を big.Int に変換する.
  *
  */
-func BigIntFromString(value string) (*big.Int, bool) {
-    return new(big.Int).SetString(value, 10)
+func BigIntFromString(value string) (*big.Int, error) {
+    bigintValue, success := new(big.Int).SetString(value, 10)
+    if !success {
+        return nil, fmt.Errorf("can not convert to big.Int: %v", value)
+    }
+    return bigintValue, nil
 }
 

@@ -36,25 +36,15 @@ func NewInfographicsTextOptions() *InfographicsTextOptions {
  *
  * インフォグラフィック文字列を生成する.
  *
- * value に変換対象の値を文字列として指定する.
- *
- * 戻り値として (infographicsText, success) を返す.
- * 変換に失敗した場合は success が false となる.
- *
  */
 func InfographicsTextFromString(
-        value string, options *InfographicsTextOptions) (string, bool) {
-    bigintValue, success := BigIntFromString(value)
-    if !success {
-        return "", false
+        value string, options *InfographicsTextOptions) (string, error) {
+    bigintValue, err := BigIntFromString(value)
+    if err != nil {
+        return "", err
     }
 
-    text, success := infographicsTextFromBigInt(bigintValue, options)
-    if !success {
-        return "", false
-    }
-
-    return text, true
+    return infographicsTextFromBigInt(bigintValue, options)
 }
 
 /**
@@ -74,22 +64,19 @@ type UnitToNamePair struct {
  *
  * big.Int からインフォグラフィック文字列を生成する.
  *
- * 戻り値として (infographicsText, success) を返す.
- * 変換に失敗した場合は success が false となる.
- *
  */
 func infographicsTextFromBigInt(
-        value *big.Int, options *InfographicsTextOptions) (string, bool) {
+        value *big.Int, options *InfographicsTextOptions) (string, error) {
     if value.Cmp(big.NewInt(0)) < 0 {
-        return "", false
+        return "", fmt.Errorf("must be (value >= 0): %v", value)
     }
 
     if options.short {
         text := infographicsShortTextFromBigInt(value, options.delimiter)
-        return text, true
+        return text, nil
     } else {
         text := infographicsLongTextFromBigInt(value, options.delimiter)
-        return text, true
+        return text, nil
     }
 }
 
