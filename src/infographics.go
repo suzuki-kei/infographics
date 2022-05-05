@@ -29,7 +29,7 @@ func InfographicsTextFromString(
         return "", false
     }
 
-    text, success := InfographicsTextFromBigInt(bigintValue, options)
+    text, success := infographicsTextFromBigInt(bigintValue, options)
     if !success {
         return "", false
     }
@@ -42,7 +42,7 @@ type UnitToNamePair struct {
     name string
 }
 
-func InfographicsTextFromBigInt(
+func infographicsTextFromBigInt(
         value *big.Int, options *InfographicsTextOptions) (string, bool) {
     if value.Cmp(big.NewInt(0)) < 0 {
         return "", false
@@ -56,7 +56,7 @@ func InfographicsTextFromBigInt(
         }
     }
 
-    unitToNameMap := CreateUnitToNameMap()
+    unitToNameMap := createUnitToNameMap()
     var unitToNamePairs []UnitToNamePair
     for unit, name := range unitToNameMap {
         unitToNamePairs = append(unitToNamePairs, UnitToNamePair{unit, name})
@@ -90,7 +90,7 @@ func InfographicsTextFromBigInt(
     return strings.Join(texts, options.delimiter), true
 }
 
-func CreateUnitToNameMap() map[*big.Int]string {
+func createUnitToNameMap() map[*big.Int]string {
     prefixes := []string{
         "一", "十", "百", "千",
     }

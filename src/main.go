@@ -12,7 +12,7 @@ func main() {
     for _, value := range values {
         text, success := InfographicsTextFromString(value, options)
         if !success {
-            error("invalid value: %v", value)
+            Error("invalid value: %v", value)
             continue
         }
         fmt.Printf("%v => %v\n", value, text)
@@ -36,7 +36,7 @@ func parseArguments() ([]string, *InfographicsTextOptions) {
             continue
         }
         if strings.HasPrefix(option, "-") {
-            warn("invalid options: %v", option)
+            Warn("invalid options: %v", option)
             continue
         }
         values = append(values, option)
