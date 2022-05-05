@@ -67,16 +67,10 @@ type UnitToNamePair struct {
  */
 func infographicsTextFromBigInt(
         value *big.Int, options *InfographicsTextOptions) (string, error) {
-    if value.Cmp(big.NewInt(0)) < 0 {
-        return "", fmt.Errorf("must be (value >= 0): %v", value)
-    }
-
     if options.short {
-        text := infographicsShortTextFromBigInt(value, options.delimiter)
-        return text, nil
+        return infographicsShortTextFromBigInt(value, options.delimiter)
     } else {
-        text := infographicsLongTextFromBigInt(value, options.delimiter)
-        return text, nil
+        return infographicsLongTextFromBigInt(value, options.delimiter)
     }
 }
 
@@ -84,12 +78,13 @@ func infographicsTextFromBigInt(
  *
  * big.Int からインフォグラフィック文字列の長いバージョンを生成する.
  *
- * TODO value が負数の場合を考慮する.
- *
  */
-func infographicsLongTextFromBigInt(value *big.Int, delimiter string) string {
+func infographicsLongTextFromBigInt(value *big.Int, delimiter string) (string, error) {
+    if value.Cmp(big.NewInt(0)) < 0 {
+        return "", fmt.Errorf("must be (value >= 0): %v", value)
+    }
     if value.Cmp(big.NewInt(0)) == 0 {
-        return "零"
+        return "零", nil
     }
 
     unitToNameMap := createUnitToNameMap()
@@ -109,19 +104,20 @@ func infographicsLongTextFromBigInt(value *big.Int, delimiter string) string {
         value = remainder
     }
 
-    return strings.Join(texts, delimiter)
+    return strings.Join(texts, delimiter), nil
 }
 
 /**
  *
  * big.Int からインフォグラフィック文字列の短いバージョンを生成する.
  *
- * TODO value が負数の場合を考慮する.
- *
  */
-func infographicsShortTextFromBigInt(value *big.Int, delimiter string) string {
+func infographicsShortTextFromBigInt(value *big.Int, delimiter string) (string, error) {
+    if value.Cmp(big.NewInt(0)) < 0 {
+        return "", fmt.Errorf("must be (value >= 0): %v", value)
+    }
     if value.Cmp(big.NewInt(0)) == 0 {
-        return "0"
+        return "0", nil
     }
 
     unitToNameMap := createUnitToNameMap()
@@ -149,7 +145,7 @@ func infographicsShortTextFromBigInt(value *big.Int, delimiter string) string {
         value = remainder
     }
 
-    return strings.Join(texts, delimiter)
+    return strings.Join(texts, delimiter), nil
 }
 
 /**
