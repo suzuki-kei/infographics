@@ -13,7 +13,7 @@ func main() {
     for _, stringValue := range options.values {
         infographicsText, success := InfographicsTextFromString(stringValue, options.delimiter)
         if !success {
-            fmt.Println("ERROR: " + stringValue)
+            error("invalid value: %v", stringValue)
             continue
         }
         fmt.Println(stringValue + " => " + infographicsText)
@@ -50,7 +50,7 @@ func parseArguments() *Options {
             continue
         }
         if strings.HasPrefix(option, "-") {
-            fmt.Println("WARN: Invalid option [" + option + "]")
+            warn("invalid options: %v", option)
             continue
         }
         options.values = append(options.values, option)
