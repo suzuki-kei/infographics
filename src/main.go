@@ -26,8 +26,16 @@ type Options struct {
     values []string
 }
 
-func parseArguments() Options {
-    var options Options
+func NewOptions() *Options {
+    options := new(Options)
+    options.short = false
+    options.delimiter = " "
+    options.values = []string {}
+    return options
+}
+
+func parseArguments() *Options {
+    options := NewOptions()
 
     for i := 1; i < len(os.Args); i++ {
         option := os.Args[i]
