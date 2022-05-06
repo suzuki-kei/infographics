@@ -11,3 +11,6 @@
     # テストを実行する.
     bash scripts/run-test.sh
 
+    # go.mod を生成する.
+    bash scripts/generate-go_mod-files.sh
+
