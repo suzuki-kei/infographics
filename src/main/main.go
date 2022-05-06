@@ -3,6 +3,8 @@ package main
 import (
     "fmt"
     "os"
+    "src/infographics"
+    "src/logging"
     "strings"
 )
 
@@ -10,9 +12,9 @@ func main() {
     values, options := parseArguments()
 
     for _, value := range values {
-        text, err := InfographicsTextFromString(value, options)
+        text, err := infographics.TextFromString(value, options)
         if err != nil {
-            Error(err.Error())
+            logging.Error(err.Error())
             continue
         }
         fmt.Printf("%v => %v\n", value, text)
@@ -26,9 +28,9 @@ func main() {
  * values には変換対象の数値文字列 (Ex. "123") が含まれる.
  *
  */
-func parseArguments() ([]string, *InfographicsTextOptions) {
+func parseArguments() ([]string, *infographics.Options) {
     values := []string{}
-    options := NewInfographicsTextOptions()
+    options := infographics.NewOptions()
 
     for i := 1; i < len(os.Args); i++ {
         option := os.Args[i]
@@ -38,21 +40,21 @@ func parseArguments() ([]string, *InfographicsTextOptions) {
             break
         }
         if option == "-s" || option == "--short" {
-            options.short = true
+            options.Short = true
             continue
         }
         if strings.HasPrefix(option, "--delimiter=") {
             delimiter := strings.Replace(option, "--delimiter=", "", 1)
-            options.delimiter = delimiter
+            options.Delimiter = delimiter
             continue
         }
         if option == "-d" || option == "--delimiter" {
             i++
-            options.delimiter = os.Args[i]
+            options.Delimiter = os.Args[i]
             continue
         }
         if strings.HasPrefix(option, "-") {
-            Warn("invalid options: %v", option)
+            logging.Warn("invalid options: %v", option)
             continue
         }
         values = append(values, option)

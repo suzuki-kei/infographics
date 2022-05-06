@@ -1,4 +1,4 @@
-package main
+package assert
 
 import (
     "reflect"
@@ -11,7 +11,7 @@ import (
  * エラーが発生しなかったことを確認する.
  *
  */
-func AssertSuccess(t *testing.T, err error) {
+func Success(t *testing.T, err error) {
     if err == nil {
         return
     }
@@ -23,7 +23,7 @@ func AssertSuccess(t *testing.T, err error) {
  * 二つの値が == を用いて等しいことを確認する.
  *
  */
-func AssertEquals[T comparable](t *testing.T, expected T, actual T) {
+func Equals[T comparable](t *testing.T, expected T, actual T) {
     if expected == actual {
         return
     }
@@ -35,7 +35,7 @@ func AssertEquals[T comparable](t *testing.T, expected T, actual T) {
  * 二つの値が reflect.DeepEqual を用いて等しいことを確認する.
  *
  */
-func AssertDeepEquals[T any](t *testing.T, expected T, actual T) {
+func DeepEquals[T any](t *testing.T, expected T, actual T) {
     if reflect.DeepEqual(expected, actual) {
         return
     }

@@ -4,9 +4,10 @@
 
 # 実行方法
 
-    # テストを実行する.
-    go test src/*.go
+    # 実行する.
+    (cd src/main/ && go run . 1020304050)
+    (cd src/main/ && go run . -s 1020304050)
 
-    # プログラムとして実行する.
-    go run $(find src/ -type f -name '*.go' -not -name '*_test.go') 1020304050
+    # テストを実行する.
+    bash scripts/run-test.sh
 

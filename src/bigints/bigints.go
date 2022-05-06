@@ -1,4 +1,4 @@
-package main
+package bigints
 
 import (
     "fmt"
@@ -10,7 +10,7 @@ import (
  * 数値文字列を big.Int に変換する.
  *
  */
-func BigIntFromString(value string) (*big.Int, error) {
+func FromString(value string) (*big.Int, error) {
     bigintValue, success := new(big.Int).SetString(value, 10)
     if !success {
         return nil, fmt.Errorf("can not convert to big.Int: %v", value)

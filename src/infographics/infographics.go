@@ -1,9 +1,11 @@
-package main
+package infographics
 
 import (
     "fmt"
     "math/big"
     "sort"
+    "src/bigints"
+    "src/slices"
     "strings"
 )
 
@@ -12,23 +14,23 @@ import (
  * インフォグラフィック文字列を生成するときのオプション.
  *
  */
-type InfographicsTextOptions struct {
+type Options struct {
     // true の場合は短縮表現を生成する
-    short bool
+    Short bool
 
     // 区切り文字
-    delimiter string
+    Delimiter string
 }
 
 /**
  *
- * デフォルト値で初期化した InfographicsTextOptions を生成する.
+ * デフォルト値で初期化した Options を生成する.
  *
  */
-func NewInfographicsTextOptions() *InfographicsTextOptions {
-    options := new(InfographicsTextOptions)
-    options.short = false
-    options.delimiter = " "
+func NewOptions() *Options {
+    options := new(Options)
+    options.Short = false
+    options.Delimiter = " "
     return options
 }
 
@@ -37,14 +39,13 @@ func NewInfographicsTextOptions() *InfographicsTextOptions {
  * インフォグラフィック文字列を生成する.
  *
  */
-func InfographicsTextFromString(
-        value string, options *InfographicsTextOptions) (string, error) {
-    bigintValue, err := BigIntFromString(value)
+func TextFromString(value string, options *Options) (string, error) {
+    bigintValue, err := bigints.FromString(value)
     if err != nil {
         return "", err
     }
 
-    return infographicsTextFromBigInt(bigintValue, options)
+    return textFromBigInt(bigintValue, options)
 }
 
 /**
@@ -65,12 +66,11 @@ type NumeralUnit struct {
  * big.Int からインフォグラフィック文字列を生成する.
  *
  */
-func infographicsTextFromBigInt(
-        value *big.Int, options *InfographicsTextOptions) (string, error) {
-    if options.short {
-        return infographicsShortTextFromBigInt(value, options.delimiter)
+func textFromBigInt(value *big.Int, options *Options) (string, error) {
+    if options.Short {
+        return shortTextFromBigInt(value, options.Delimiter)
     } else {
-        return infographicsLongTextFromBigInt(value, options.delimiter)
+        return longTextFromBigInt(value, options.Delimiter)
     }
 }
 
@@ -79,7 +79,7 @@ func infographicsTextFromBigInt(
  * big.Int からインフォグラフィック文字列の長いバージョンを生成する.
  *
  */
-func infographicsLongTextFromBigInt(value *big.Int, delimiter string) (string, error) {
+func longTextFromBigInt(value *big.Int, delimiter string) (string, error) {
     if value.Cmp(big.NewInt(0)) < 0 {
         return "", fmt.Errorf("must be (value >= 0): %v", value)
     }
@@ -102,7 +102,7 @@ func infographicsLongTextFromBigInt(value *big.Int, delimiter string) (string, e
         for _, numeralUnit := range numeralUnits {
             quotient, remainder := new(big.Int).DivMod(value, numeralUnit.unit, new(big.Int))
             quotientInt := int(quotient.Int64())
-            texts = append(texts, Repeat(numeralUnit.name, quotientInt)...)
+            texts = append(texts, slices.Repeat(numeralUnit.name, quotientInt)...)
             value = remainder
         }
     }
@@ -115,7 +115,7 @@ func infographicsLongTextFromBigInt(value *big.Int, delimiter string) (string, e
  * big.Int からインフォグラフィック文字列の短いバージョンを生成する.
  *
  */
-func infographicsShortTextFromBigInt(value *big.Int, delimiter string) (string, error) {
+func shortTextFromBigInt(value *big.Int, delimiter string) (string, error) {
     if value.Cmp(big.NewInt(0)) < 0 {
         return "", fmt.Errorf("must be (value >= 0): %v", value)
     }

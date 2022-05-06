@@ -1,10 +1,11 @@
-package main
+package infographics
 
 import (
+    "src/assert"
     "testing"
 )
 
-func TestInfographicsTextFromString(t *testing.T) {
+func TestTextFromString(t *testing.T) {
     type TestCase struct {
         value string
         short bool
@@ -27,12 +28,12 @@ func TestInfographicsTextFromString(t *testing.T) {
         delimiter := testCase.delimiter
         expected := testCase.expected
 
-        options := NewInfographicsTextOptions()
-        options.short = short
-        options.delimiter = delimiter
-        text, err := InfographicsTextFromString(value, options)
-        AssertSuccess(t, err)
-        AssertEquals(t, expected, text)
+        options := NewOptions()
+        options.Short = short
+        options.Delimiter = delimiter
+        text, err := TextFromString(value, options)
+        assert.Success(t, err)
+        assert.Equals(t, expected, text)
     }
 }
 

@@ -1,10 +1,11 @@
-package main
+package bigints
 
 import (
+    "src/assert"
     "testing"
 )
 
-func TestBigIntFromString(t *testing.T) {
+func TestFromString(t *testing.T) {
     stringValues := []string{
         "0",
         "1",
@@ -13,9 +14,9 @@ func TestBigIntFromString(t *testing.T) {
         "1267650600228229401496703205376", // 2^100
     }
     for _, stringValue := range stringValues {
-        bigintValue, err := BigIntFromString(stringValue)
-        AssertSuccess(t, err)
-        AssertEquals(t, stringValue, bigintValue.String())
+        bigintValue, err := FromString(stringValue)
+        assert.Success(t, err)
+        assert.Equals(t, stringValue, bigintValue.String())
     }
 }
 

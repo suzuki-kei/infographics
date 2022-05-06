@@ -1,31 +1,32 @@
-package main
+package slices
 
 import (
+    "src/assert"
     "testing"
 )
 
-func TestCopySlice(t *testing.T) {
+func TestCopy(t *testing.T) {
     slice := []int{1, 2, 3}
 
-    copiedSlice := CopySlice(slice)
-    AssertDeepEquals(t, []int{1, 2, 3}, copiedSlice)
+    copiedSlice := Copy(slice)
+    assert.DeepEquals(t, []int{1, 2, 3}, copiedSlice)
 
     slice[0] = 10
     slice[1] = 20
     slice[2] = 30
-    AssertDeepEquals(t, []int{1, 2, 3}, copiedSlice)
+    assert.DeepEquals(t, []int{1, 2, 3}, copiedSlice)
 }
 
-func TestMapSlice(t *testing.T) {
+func TestMap(t *testing.T) {
     values := []int{1, 2, 3}
     mapper := func(x int) int { return x + 1 }
-    mappedValues := MapSlice(values, mapper)
+    mappedValues := Map(values, mapper)
     expectedValues := []int{2, 3, 4}
-    AssertDeepEquals(t, expectedValues, mappedValues)
+    assert.DeepEquals(t, expectedValues, mappedValues)
 }
 
-func TestProductSlices(t *testing.T) {
-    actual := ProductSlices(
+func TestProduct(t *testing.T) {
+    actual := Product(
         []string{"A", "B", "C"},
         []string{"1", "2", "3"})
     expected := [][]string{
@@ -39,10 +40,10 @@ func TestProductSlices(t *testing.T) {
         {"C", "2"},
         {"C", "3"},
     }
-    AssertDeepEquals(t, expected, actual)
+    assert.DeepEquals(t, expected, actual)
 }
 
-func TestProductSlicesCallback(t *testing.T) {
+func TestProductCallback(t *testing.T) {
     product := [][]int{
     }
     callback := func(values []int) {
@@ -63,8 +64,8 @@ func TestProductSlicesCallback(t *testing.T) {
         {3, 5},
         {3, 6},
     }
-    ProductSlicesCallback(callback, slices...)
-    AssertDeepEquals(t, expected, product)
+    ProductCallback(callback, slices...)
+    assert.DeepEquals(t, expected, product)
 }
 
 func TestRepeat(t *testing.T) {
@@ -88,7 +89,7 @@ func TestRepeat(t *testing.T) {
         n := testCase.n
         expected := testCase.expected
         actual := Repeat(value, n)
-        AssertDeepEquals(t, expected, actual)
+        assert.DeepEquals(t, expected, actual)
     }
 }
 

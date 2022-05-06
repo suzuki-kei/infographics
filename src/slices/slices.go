@@ -1,11 +1,11 @@
-package main
+package slices
 
 /**
  *
  * スライスをコピーする.
  *
  */
-func CopySlice[T any](slice []T) []T {
+func Copy[T any](slice []T) []T {
     return append([]T{}, slice...)
 }
 
@@ -14,7 +14,7 @@ func CopySlice[T any](slice []T) []T {
  * スライスを変換する.
  *
  */
-func MapSlice[From any, To any](slice []From, mapper func(From) To) []To {
+func Map[From any, To any](slice []From, mapper func(From) To) []To {
     values := make([]To, len(slice))
 
     for i, value := range slice {
@@ -28,10 +28,10 @@ func MapSlice[From any, To any](slice []From, mapper func(From) To) []To {
  * スライスの直積を生成し, 戻り値で返す.
  *
  */
-func ProductSlices[T any](slices ...[]T) [][]T {
+func Product[T any](slices ...[]T) [][]T {
     product := [][]T{}
 
-    ProductSlicesCallback(
+    ProductCallback(
         func(values []T) {
             product = append(product, values)
         },
@@ -44,22 +44,22 @@ func ProductSlices[T any](slices ...[]T) [][]T {
  * スライスの直積を生成し, コールバックを呼び出す.
  *
  */
-func ProductSlicesCallback[T any](callback func([]T), slices ...[]T) {
-    productSlicesCallback_Loop(slices, callback)
+func ProductCallback[T any](callback func([]T), slices ...[]T) {
+    productCallback_Loop(slices, callback)
 
     // NOTE: ループ版と再帰版の両方を実装したかっただけ.
-    // productSlicesCallback_Tailrec([]T{}, slices, callback)
+    // productsCallback_Tailrec([]T{}, slices, callback)
 }
 
-// ProductSlicesCallback のループによる実装.
-func productSlicesCallback_Loop[T any](slices [][]T, callback func([]T)) {
+// ProductCallback のループによる実装.
+func productCallback_Loop[T any](slices [][]T, callback func([]T)) {
     i := 0
     indices := make([]int, len(slices))
     leadingValues := make([]T, len(slices))
 
     for {
         if i >= len(slices) {
-            callback(CopySlice(leadingValues))
+            callback(Copy(leadingValues))
             i--
             indices[i]++
             continue
@@ -78,14 +78,14 @@ func productSlicesCallback_Loop[T any](slices [][]T, callback func([]T)) {
     }
 }
 
-// ProductSlicesCallback の再帰による実装.
-func productSlicesCallback_Tailrec[T any](leadingValues []T, slices [][]T, callback func([]T)) {
+// ProductCallback の再帰による実装.
+func productCallback_Tailrec[T any](leadingValues []T, slices [][]T, callback func([]T)) {
     if len(slices) == 0 {
         callback(leadingValues)
         return
     }
     for _, value := range slices[0] {
-        productSlicesCallback_Tailrec(
+        productCallback_Tailrec(
             append(leadingValues, value),
             slices[1:],
             callback)
