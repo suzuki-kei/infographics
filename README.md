@@ -2,21 +2,25 @@
 
 漢数字によるインフォグラフィックを生成するツールです.
 
-# 実行方法
+# 各種手順
 
-    # 実行する.
-    bash scripts/run.sh 1020304050
-    bash scripts/run.sh -s 1020304050
+    # プログラムを実行する.
+    make run ARG='1020304050'
+    make run ARG='-s 1020304050'
 
     # テストを実行する.
-    bash scripts/run-test.sh
-
-    # ソースコードに関する情報 (TODO コメントやコード行数など) を表示する.
-    bash scripts/stats.sh
-
-    # go.mod を生成する.
-    bash scripts/generate-go_mod-files.sh
+    make test
 
     # ビルドする.
-    bash scripts/build.sh
+    make build
+
+    # ビルドで生成した実行ファイルを起動する.
+    ./target/infographics 1020304050
+    ./target/infographics -s 1020304050
+
+    # ビルドで生成したファイルを削除する.
+    make clean
+
+    # その他のルールを確認する.
+    make help
 
