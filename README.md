@@ -11,6 +11,9 @@
     # テストを実行する.
     bash scripts/run-test.sh
 
+    # ソースコードに関する情報 (TODO コメントやコード行数など) を表示する.
+    bash scripts/stats.sh
+
     # go.mod を生成する.
     bash scripts/generate-go_mod-files.sh
 
