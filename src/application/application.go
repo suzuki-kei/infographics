@@ -8,11 +8,38 @@ import (
     "strings"
 )
 
+/**
+ *
+ * インフォグラフィック文字列を生成するときのオプション.
+ *
+ */
+type Options struct {
+    // true の場合は短縮表現を生成する.
+    short bool
+
+    // 区切り文字.
+    delimiter string
+}
+
+/**
+ *
+ * デフォルト値で初期化した Options を生成する.
+ *
+ */
+func newOptions() *Options {
+    return &Options{
+        short: false,
+        delimiter: " ",
+    }
+}
+
 func Run() {
     values, options := parseArguments(os.Args[1:])
+    short := options.short
+    delimiter := options.delimiter
 
     for _, value := range values {
-        text, err := infographics.Generate(value, options)
+        text, err := infographics.Generate(value, short, delimiter)
         if err != nil {
             logging.Error(err.Error())
             continue
@@ -28,9 +55,9 @@ func Run() {
  * values には変換対象の数値文字列 (Ex. "123") が含まれる.
  *
  */
-func parseArguments(arguments []string) ([]string, *infographics.Options) {
+func parseArguments(arguments []string) ([]string, *Options) {
     values := []string{}
-    options := infographics.NewOptions()
+    options := newOptions()
 
     for i := 0; i < len(arguments); i++ {
         option := arguments[i]
@@ -40,17 +67,17 @@ func parseArguments(arguments []string) ([]string, *infographics.Options) {
             break
         }
         if option == "-s" || option == "--short" {
-            options.Short = true
+            options.short = true
             continue
         }
         if strings.HasPrefix(option, "--delimiter=") {
             delimiter := strings.Replace(option, "--delimiter=", "", 1)
-            options.Delimiter = delimiter
+            options.delimiter = delimiter
             continue
         }
         if option == "-d" || option == "--delimiter" {
             i++
-            options.Delimiter = arguments[i]
+            options.delimiter = arguments[i]
             continue
         }
         if strings.HasPrefix(option, "-") {

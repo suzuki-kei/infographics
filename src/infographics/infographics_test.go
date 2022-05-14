@@ -28,10 +28,7 @@ func TestGenerate(t *testing.T) {
         delimiter := testCase.delimiter
         expected := testCase.expected
 
-        options := NewOptions()
-        options.Short = short
-        options.Delimiter = delimiter
-        text, err := Generate(value, options)
+        text, err := Generate(value, short, delimiter)
         assert.Success(t, err)
         assert.Equals(t, expected, text)
     }
