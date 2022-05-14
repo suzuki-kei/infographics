@@ -39,13 +39,13 @@ func NewOptions() *Options {
  * インフォグラフィック文字列を生成する.
  *
  */
-func TextFromString(value string, options *Options) (string, error) {
+func Generate(value string, options *Options) (string, error) {
     bigintValue, err := bigints.FromString(value)
     if err != nil {
         return "", err
     }
 
-    return textFromBigInt(bigintValue, options)
+    return generate(bigintValue, options)
 }
 
 /**
@@ -66,11 +66,11 @@ type NumeralUnit struct {
  * big.Int からインフォグラフィック文字列を生成する.
  *
  */
-func textFromBigInt(value *big.Int, options *Options) (string, error) {
+func generate(value *big.Int, options *Options) (string, error) {
     if options.Short {
-        return shortTextFromBigInt(value, options.Delimiter)
+        return generateShortText(value, options.Delimiter)
     } else {
-        return longTextFromBigInt(value, options.Delimiter)
+        return generateLongText(value, options.Delimiter)
     }
 }
 
@@ -79,7 +79,7 @@ func textFromBigInt(value *big.Int, options *Options) (string, error) {
  * big.Int からインフォグラフィック文字列の長いバージョンを生成する.
  *
  */
-func longTextFromBigInt(value *big.Int, delimiter string) (string, error) {
+func generateLongText(value *big.Int, delimiter string) (string, error) {
     if value.Cmp(big.NewInt(0)) < 0 {
         return "", fmt.Errorf("must be (value >= 0): %v", value)
     }
@@ -115,7 +115,7 @@ func longTextFromBigInt(value *big.Int, delimiter string) (string, error) {
  * big.Int からインフォグラフィック文字列の短いバージョンを生成する.
  *
  */
-func shortTextFromBigInt(value *big.Int, delimiter string) (string, error) {
+func generateShortText(value *big.Int, delimiter string) (string, error) {
     if value.Cmp(big.NewInt(0)) < 0 {
         return "", fmt.Errorf("must be (value >= 0): %v", value)
     }

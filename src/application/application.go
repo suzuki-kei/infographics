@@ -12,7 +12,7 @@ func Run() {
     values, options := parseArguments(os.Args[1:])
 
     for _, value := range values {
-        text, err := infographics.TextFromString(value, options)
+        text, err := infographics.Generate(value, options)
         if err != nil {
             logging.Error(err.Error())
             continue

@@ -5,7 +5,7 @@ import (
     "testing"
 )
 
-func TestTextFromString(t *testing.T) {
+func TestGenerate(t *testing.T) {
     type TestCase struct {
         value string
         short bool
@@ -31,7 +31,7 @@ func TestTextFromString(t *testing.T) {
         options := NewOptions()
         options.Short = short
         options.Delimiter = delimiter
-        text, err := TextFromString(value, options)
+        text, err := Generate(value, options)
         assert.Success(t, err)
         assert.Equals(t, expected, text)
     }
