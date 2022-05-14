@@ -14,6 +14,12 @@
     $ infographics --si -s 1002003004005
     1002003004005 => 1T 2G 3M 4k 5
 
+    $ infographics --iec 5245953
+    5245953 => Mi Mi Mi Mi Mi Ki Ki Ki 1
+
+    $ infographics --iec -s 5245953
+    5245953 => 5Mi 3Ki 11
+
 # 各種手順
 
     # プログラムを実行する.
