@@ -56,6 +56,16 @@ func TestParseArguments(t *testing.T) {
             []string{"123"},
             &Options{false, " ", infographics.ChineseNumeral},
         },
+        {
+            []string{"--si", "123"},
+            []string{"123"},
+            &Options{false, " ", infographics.SI},
+        },
+        {
+            []string{"--iec", "123"},
+            []string{"123"},
+            &Options{false, " ", infographics.IEC},
+        },
         // 複数のオプションを同時に指定する場合.
         {
             []string{"123", "-s", "456", "-d", ",", "789"},

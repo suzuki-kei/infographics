@@ -89,6 +89,14 @@ func parseArguments(arguments []string) ([]string, *Options) {
             options.systemOfUnit = infographics.ChineseNumeral
             continue
         }
+        if option == "--si" {
+            options.systemOfUnit = infographics.SI
+            continue
+        }
+        if option == "--iec" {
+            options.systemOfUnit = infographics.IEC
+            continue
+        }
         if strings.HasPrefix(option, "-") {
             logging.Warn("invalid options: %v", option)
             continue
