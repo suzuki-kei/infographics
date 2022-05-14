@@ -40,7 +40,11 @@ func Generate(value string, short bool, delimiter string, systemOfUnit SystemOfU
             }
             return generator.Generate(bigintValue)
         case SI:
-            return "", fmt.Errorf("unsupported SystemOfUnit: %v", systemOfUnit)
+            generator := SiInfographicsGenerator{
+                short: short,
+                delimiter: delimiter,
+            }
+            return generator.Generate(bigintValue)
         case IEC:
             return "", fmt.Errorf("unsupported SystemOfUnit: %v", systemOfUnit)
         default:
