@@ -26,9 +26,10 @@ func TestGenerate(t *testing.T) {
         value := testCase.value
         short := testCase.short
         delimiter := testCase.delimiter
+        systemOfUnit := ChineseNumeral
         expected := testCase.expected
 
-        text, err := Generate(value, short, delimiter)
+        text, err := Generate(value, short, delimiter, systemOfUnit)
         assert.Success(t, err)
         assert.Equals(t, expected, text)
     }

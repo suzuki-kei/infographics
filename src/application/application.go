@@ -19,6 +19,9 @@ type Options struct {
 
     // 区切り文字.
     delimiter string
+
+    // 単位系.
+    systemOfUnit infographics.SystemOfUnit
 }
 
 /**
@@ -30,6 +33,7 @@ func newOptions() *Options {
     return &Options{
         short: false,
         delimiter: " ",
+        systemOfUnit: infographics.ChineseNumeral,
     }
 }
 
@@ -37,9 +41,10 @@ func Run() {
     values, options := parseArguments(os.Args[1:])
     short := options.short
     delimiter := options.delimiter
+    systemOfUnit := options.systemOfUnit
 
     for _, value := range values {
-        text, err := infographics.Generate(value, short, delimiter)
+        text, err := infographics.Generate(value, short, delimiter, systemOfUnit)
         if err != nil {
             logging.Error(err.Error())
             continue
@@ -78,6 +83,10 @@ func parseArguments(arguments []string) ([]string, *Options) {
         if option == "-d" || option == "--delimiter" {
             i++
             options.delimiter = arguments[i]
+            continue
+        }
+        if option == "--chinese-numeral" {
+            options.systemOfUnit = infographics.ChineseNumeral
             continue
         }
         if strings.HasPrefix(option, "-") {
