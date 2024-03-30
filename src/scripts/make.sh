@@ -3,7 +3,7 @@
 set -eu -o posix -o pipefail
 
 declare ROOT_DIR
-ROOT_DIR="$(cd -- "$(dirname -- "$0")/.." && pwd)"
+ROOT_DIR="$(cd -- "$(dirname -- "$0")/../.." && pwd)"
 declare -gr ROOT_DIR
 
 declare SOURCE_DIR
@@ -33,7 +33,7 @@ function main
 function make_build
 {
     mkdir -p "${TARGET_DIR}"
-    go build -C "${SOURCE_DIR}" -o "${TARGET_DIR}/infographics"
+    go build -C "${SOURCE_DIR}/go" -o "${TARGET_DIR}/infographics"
 }
 
 function make_clean
@@ -43,14 +43,14 @@ function make_clean
 
 function make_run
 {
-    go run -C "${SOURCE_DIR}" . "$@"
+    go run -C "${SOURCE_DIR}/go" . "$@"
 }
 
 function make_stats
 {
     echo '# Annotaion Comments'
     (
-        cd "${SOURCE_DIR}"
+        cd "${SOURCE_DIR}/go"
         find . -type f -name '*.go' | xargs grep -P 'TODO|NOTE|FIXME|XXX'
     ) | sed 's/^/    /'
 
@@ -58,14 +58,14 @@ function make_stats
 
     echo '# Line of Codes'
     (
-        cd "${SOURCE_DIR}"
+        cd "${SOURCE_DIR}/go"
         find . -type f -name '*.go' | xargs wc -l
     ) | sed 's/^/    /'
 }
 
 function make_test
 {
-    for package_dir in $(find "${SOURCE_DIR}" -type f -name '*_test.go' | xargs dirname | sort -u)
+    for package_dir in $(find "${SOURCE_DIR}/go" -type f -name '*_test.go' | xargs dirname | sort -u)
     do
         (cd "${package_dir}" && go test)
     done

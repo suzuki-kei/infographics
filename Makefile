@@ -1,4 +1,4 @@
 
-include makefiles/common.mk
-include makefiles/application.mk
+include src/makefiles/common.mk
+include src/makefiles/application.mk
 
