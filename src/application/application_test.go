@@ -1,9 +1,12 @@
 package application
 
 import (
-    "src/assert"
-    "src/infographics"
     "testing"
+)
+
+import (
+    "localhost/assert"
+    "localhost/infographics"
 )
 
 func TestParseArguments(t *testing.T) {

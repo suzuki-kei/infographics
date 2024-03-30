@@ -1,9 +1,12 @@
 package infographics
 
 import (
-    "src/assert"
-    "src/bigints"
     "testing"
+)
+
+import (
+    "localhost/assert"
+    "localhost/bigints"
 )
 
 func TestChineseNumeralInfographicsGeneratorGenerate(t *testing.T) {

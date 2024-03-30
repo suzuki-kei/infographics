@@ -1,7 +1,7 @@
 package main
 
 import (
-    "src/application"
+    "localhost/application"
 )
 
 func main() {

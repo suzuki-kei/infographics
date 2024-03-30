@@ -3,9 +3,12 @@ package application
 import (
     "fmt"
     "os"
-    "src/infographics"
-    "src/logging"
     "strings"
+)
+
+import (
+    "localhost/infographics"
+    "localhost/logging"
 )
 
 /**

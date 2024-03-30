@@ -1,7 +1,7 @@
 #!/bin/bash
 
 readonly ROOT_DIR="$(cd "$(dirname "$0")"/.. && pwd)"
-cd "${ROOT_DIR}/src/main"
+cd "${ROOT_DIR}/src"
 
 readonly TARGET_DIR="${ROOT_DIR}/target"
 mkdir -p "${TARGET_DIR}"

@@ -1,8 +1,11 @@
 package infographics
 
 import (
-    "src/assert"
     "testing"
+)
+
+import (
+    "localhost/assert"
 )
 
 func TestGenerate(t *testing.T) {

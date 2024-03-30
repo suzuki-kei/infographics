@@ -2,7 +2,10 @@ package infographics
 
 import (
     "fmt"
-    "src/bigints"
+)
+
+import (
+    "localhost/bigints"
 )
 
 type SystemOfUnit int

@@ -4,8 +4,11 @@ import (
     "fmt"
     "math/big"
     "sort"
-    "src/slices"
     "strings"
+)
+
+import (
+    "localhost/slices"
 )
 
 /**

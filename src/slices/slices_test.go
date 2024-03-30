@@ -1,8 +1,11 @@
 package slices
 
 import (
-    "src/assert"
     "testing"
+)
+
+import (
+    "localhost/assert"
 )
 
 func TestCopy(t *testing.T) {

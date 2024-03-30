@@ -1,8 +1,11 @@
 package bigints
 
 import (
-    "src/assert"
     "testing"
+)
+
+import (
+    "localhost/assert"
 )
 
 func TestFromString(t *testing.T) {
