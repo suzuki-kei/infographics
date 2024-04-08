@@ -2,6 +2,8 @@ package application
 
 import (
     "fmt"
+    "io"
+    "log"
     "os"
     "strings"
 )
@@ -41,7 +43,7 @@ func newOptions() *Options {
 }
 
 func Run() {
-    values, options := parseArguments(os.Args[1:])
+    options, values := getOptionsAndValues()
     short := options.short
     delimiter := options.delimiter
     systemOfUnit := options.systemOfUnit
@@ -54,6 +56,36 @@ func Run() {
         }
         fmt.Printf("%v => %v\n", value, text)
     }
+}
+
+/**
+ *
+ * オプションと変換対象の値を読み込む.
+ *
+ */
+func getOptionsAndValues() (*Options, []string) {
+    values, options := parseArguments(os.Args[1:])
+    if len(values) != 0 {
+        return options, values
+    }
+
+    lines := readLines(os.Stdin)
+    return options, lines
+}
+
+/**
+ *
+ * io.Reader から全てのデータをテキストとして読み込む.
+ *
+ */
+func readLines(r io.Reader) []string {
+    bytes, err := io.ReadAll(r)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    text := strings.TrimSuffix(string(bytes), "\n")
+    return strings.Split(text, "\n")
 }
 
 /**
