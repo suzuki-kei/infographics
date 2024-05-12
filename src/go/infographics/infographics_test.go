@@ -12,7 +12,7 @@ func TestGenerate(t *testing.T) {
     type TestCase struct {
         value string
         short bool
-        delimiter string
+        separator string
         expected string
     }
     testCases := []TestCase{
@@ -28,11 +28,11 @@ func TestGenerate(t *testing.T) {
     for _, testCase := range testCases {
         value := testCase.value
         short := testCase.short
-        delimiter := testCase.delimiter
+        separator := testCase.separator
         systemOfUnit := ChineseNumeral
         expected := testCase.expected
 
-        text, err := Generate(value, short, delimiter, systemOfUnit)
+        text, err := Generate(value, short, separator, systemOfUnit)
         assert.Success(t, err)
         assert.Equals(t, expected, text)
     }

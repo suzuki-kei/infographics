@@ -29,7 +29,7 @@ const (
  * インフォグラフィック文字列を生成する.
  *
  */
-func Generate(value string, short bool, delimiter string, systemOfUnit SystemOfUnit) (string, error) {
+func Generate(value string, short bool, separator string, systemOfUnit SystemOfUnit) (string, error) {
     bigintValue, err := bigints.FromString(value)
     if err != nil {
         return "", err
@@ -39,19 +39,19 @@ func Generate(value string, short bool, delimiter string, systemOfUnit SystemOfU
         case ChineseNumeral:
             generator := ChineseNumeralInfographicsGenerator{
                 short: short,
-                delimiter: delimiter,
+                separator: separator,
             }
             return generator.Generate(bigintValue)
         case SI:
             generator := SiInfographicsGenerator{
                 short: short,
-                delimiter: delimiter,
+                separator: separator,
             }
             return generator.Generate(bigintValue)
         case IEC:
             generator := IecInfographicsGenerator{
                 short: short,
-                delimiter: delimiter,
+                separator: separator,
             }
             return generator.Generate(bigintValue)
         default:

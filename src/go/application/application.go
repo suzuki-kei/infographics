@@ -23,7 +23,7 @@ type Options struct {
     short bool
 
     // 区切り文字.
-    delimiter string
+    separator string
 
     // 単位系.
     systemOfUnit infographics.SystemOfUnit
@@ -37,7 +37,7 @@ type Options struct {
 func newOptions() *Options {
     return &Options{
         short: true,
-        delimiter: " ",
+        separator: " ",
         systemOfUnit: infographics.ChineseNumeral,
     }
 }
@@ -45,11 +45,11 @@ func newOptions() *Options {
 func Run() {
     options, values := getOptionsAndValues()
     short := options.short
-    delimiter := options.delimiter
+    separator := options.separator
     systemOfUnit := options.systemOfUnit
 
     for _, value := range values {
-        text, err := infographics.Generate(value, short, delimiter, systemOfUnit)
+        text, err := infographics.Generate(value, short, separator, systemOfUnit)
         if err != nil {
             logging.Error(err.Error())
             continue
@@ -110,14 +110,14 @@ func parseArguments(arguments []string) ([]string, *Options) {
             options.short = false
             continue
         }
-        if strings.HasPrefix(option, "--delimiter=") {
-            delimiter := strings.Replace(option, "--delimiter=", "", 1)
-            options.delimiter = delimiter
+        if strings.HasPrefix(option, "--separator=") {
+            separator := strings.Replace(option, "--separator=", "", 1)
+            options.separator = separator
             continue
         }
-        if option == "-d" || option == "--delimiter" {
+        if option == "-s" || option == "--separator" {
             i++
-            options.delimiter = arguments[i]
+            options.separator = arguments[i]
             continue
         }
         if option == "--chinese-numeral" {

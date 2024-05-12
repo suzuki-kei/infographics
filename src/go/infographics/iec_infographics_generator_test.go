@@ -13,7 +13,7 @@ func TestIecInfographicsGeneratorGenerate(t *testing.T) {
     type TestCase struct {
         value string
         short bool
-        delimiter string
+        separator string
         expected string
     }
     testCases := []TestCase{
@@ -29,7 +29,7 @@ func TestIecInfographicsGeneratorGenerate(t *testing.T) {
     for _, testCase := range testCases {
         generator := IecInfographicsGenerator{
             short: testCase.short,
-            delimiter: testCase.delimiter,
+            separator: testCase.separator,
         }
         value, _ := bigints.FromString(testCase.value)
         text, err := generator.Generate(value)

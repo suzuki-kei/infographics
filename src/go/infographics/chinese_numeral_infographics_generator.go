@@ -22,7 +22,7 @@ type ChineseNumeralInfographicsGenerator struct {
     short bool
 
     // 区切り文字.
-    delimiter string
+    separator string
 
 }
 
@@ -72,7 +72,7 @@ func (this ChineseNumeralInfographicsGenerator) generateLongText(value *big.Int)
         }
     }
 
-    return strings.Join(texts, this.delimiter), nil
+    return strings.Join(texts, this.separator), nil
 }
 
 /**
@@ -111,7 +111,7 @@ func (this ChineseNumeralInfographicsGenerator) generateShortText(value *big.Int
         }
     }
 
-    return strings.Join(texts, this.delimiter), nil
+    return strings.Join(texts, this.separator), nil
 }
 
 /**

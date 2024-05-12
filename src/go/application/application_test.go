@@ -45,12 +45,12 @@ func TestParseArguments(t *testing.T) {
             &Options{false, ",", infographics.ChineseNumeral},
         },
         {
-            []string{"--delimiter", ",", "123"},
+            []string{"--separator", ",", "123"},
             []string{"123"},
             &Options{false, ",", infographics.ChineseNumeral},
         },
         {
-            []string{"--delimiter=,", "123"},
+            []string{"--separator=,", "123"},
             []string{"123"},
             &Options{false, ",", infographics.ChineseNumeral},
         },

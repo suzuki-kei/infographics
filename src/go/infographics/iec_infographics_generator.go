@@ -23,7 +23,7 @@ type IecInfographicsGenerator struct {
     short bool
 
     // 区切り文字.
-    delimiter string
+    separator string
 
 }
 
@@ -75,7 +75,7 @@ func (this IecInfographicsGenerator) generateLongText(value *big.Int) (string, e
         }
     }
 
-    return strings.Join(texts, this.delimiter), nil
+    return strings.Join(texts, this.separator), nil
 }
 
 /**
@@ -116,7 +116,7 @@ func (this IecInfographicsGenerator) generateShortText(value *big.Int) (string, 
         }
     }
 
-    return strings.Join(texts, this.delimiter), nil
+    return strings.Join(texts, this.separator), nil
 }
 
 /**
