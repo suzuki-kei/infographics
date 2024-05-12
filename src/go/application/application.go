@@ -36,7 +36,7 @@ type Options struct {
  */
 func newOptions() *Options {
     return &Options{
-        short: false,
+        short: true,
         delimiter: " ",
         systemOfUnit: infographics.ChineseNumeral,
     }
@@ -106,8 +106,8 @@ func parseArguments(arguments []string) ([]string, *Options) {
             values = append(values, arguments[i + 1:]...)
             break
         }
-        if option == "-s" || option == "--short" {
-            options.short = true
+        if option == "-l" || option == "--long" {
+            options.short = false
             continue
         }
         if strings.HasPrefix(option, "--delimiter=") {
